@@ -2,6 +2,7 @@
 import React, { Component, Fragment } from "react";
 import TodoList from "./TodoList";
 import Header from "./Header";
+import InputTodo from "./InputTodo";
 class TodoContainer extends Component {
 
     state = {
@@ -25,20 +26,36 @@ class TodoContainer extends Component {
        };
 
        handleChange = (id) => {
-        this.setState({
-            todos: this.state.todos.map(todo => {
+        this.setState(prevState => ({
+            todos: prevState.todos.map(todo => {
                 if(todo.id===id) {
-                    todo.completed = !todo.completed;
+                    return {
+                        ...todo,
+                        completed: !todo.completed,
+                    }
+                    
                 }
                 return todo;
             })
+        }))
+       }
+
+       delTodo = id => {
+        this.setState({
+            todos: [
+                ...this.state.todos.filter(todo => {
+                    return todo.id !== id;
+                })
+            ]
         })
        }
+
     render() {
         return (
             <Fragment>
             <Header />
-            <TodoList todos={this.state.todos} handleChangeProps={this.handleChange}></TodoList>
+            <InputTodo />
+            <TodoList todos={this.state.todos} handleChangeProps={this.handleChange} delTodoProps={this.delTodo}></TodoList>
             </Fragment>
         );
     }
