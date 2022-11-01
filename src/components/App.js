@@ -5,7 +5,7 @@ import TodoContainer from './TodoContainer';
 // eslint-disable-next-line
 const App = () => {
 
-  return (<div><TodoContainer /></div>);
+  return (<div className='todo-container'><TodoContainer /></div>);
 };
 
 export default App;

@@ -1,14 +1,20 @@
 /* eslint-disable */
 
 const TodoItem = (props) => {
-    return(<li>
+
+    const {id, title, completed} = props.todo;
+    return(<div onDoubleClick={this.handleEditing}>
+        <li className="item">
         <input 
         type="checkbox" 
-        checked={props.todo.completed}
-        onChange={() => props.handleChangeProps(props.todo.id)}></input>
-        <button onClick={() => props.delTodoProps(props.todo.id)}>Delete</button>
-        {props.todo.title}
-        </li>)
+        checked={completed}
+        onChange={() => props.handleChangeProps(id)}className="checkbox"></input>
+        <button onClick={() => props.delTodoProps(id)}>Delete</button>
+        <span className={completed?"completed-style":null}>
+        {title}
+        </span>
+        </li>
+        </div>)
 }
 
 export default TodoItem;
