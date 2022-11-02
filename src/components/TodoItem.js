@@ -1,60 +1,51 @@
 /* eslint-disable */
-import React from "react"
+import React, { useState, useEffect } from "react"
 
-class TodoItem extends React.Component {
+const TodoItem = props => {
 
-     state = {
-        editing: false,
-    }  
+     const [editing, setEditing] = useState(false);
 
    
 
-    handleEditing = () => {
-        this.setState({
-            editing: true,
-        })
+    const handleEditing = () => {
+        setEditing(true)
     }
 
-    handleUpdatedDone = e => {
+    const handleUpdatedDone = e => {
         if(e.key === "Enter") {
-            this.setState({
-                editing: false
-            })
+            setEditing(false)
         }
     }
 
-    render() {
-        const {id, title, completed} = this.props.todo;
+        const {id, title, completed} = props.todo;
 
         let viewMode = {}
         let editMode = {}
 
-        if (this.state.editing) {
+        if (editing) {
             viewMode.display = "none"
         } else {
             editMode.display = "none"
         }
-        
     
   return(
         <li className="item">
-        <div onDoubleClick={this.handleEditing} style={viewMode}>
+        <div onDoubleClick={handleEditing} style={viewMode}>
         <input 
         type="checkbox" 
         checked={completed}
-        onChange={() => this.props.handleChangeProps(id)}className="checkbox"></input>
-        <button onClick={() => this.props.delTodoProps(id)}>Delete</button>
+        onChange={() => props.handleChangeProps(id)}className="checkbox"></input>
+        <button onClick={() =>props.delTodoProps(id)}>Delete</button>
         <span className={completed?"completed-style":null}>
         {title}
         </span>
         </div>
         <input type="text" className="textInput" style={editMode} value={title} onChange={e => {
-            this.props.setUpdateProps(e.target.value, id)
-        }} onKeyDown={this.handleUpdatedDone}/>
+            props.setUpdateProps(e.target.value, id)
+        }} onKeyDown={handleUpdatedDone}/>
         </li>
         )
-    }
-  
+      
 }
 
 export default TodoItem;
