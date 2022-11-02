@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { useState, useEffect } from "react"
+import { FaTrash } from "react-icons/fa"
 
 const TodoItem = props => {
 
@@ -35,7 +36,7 @@ const TodoItem = props => {
         type="checkbox" 
         checked={completed}
         onChange={() => props.handleChangeProps(id)}className="checkbox"></input>
-        <button onClick={() =>props.delTodoProps(id)}>Delete</button>
+        <button onClick={() =>props.delTodoProps(id)}><FaTrash /></button>
         <span className={completed?"completed-style":null}>
         {title}
         </span>
