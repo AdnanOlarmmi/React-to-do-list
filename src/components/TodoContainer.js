@@ -1,18 +1,16 @@
 /*eslint-disable */
 import { v4 as uuidv4 } from "uuid"
-import React, { Component, Fragment } from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import TodoList from "./TodoList";
 import Header from "./Header";
 import InputTodo from "./InputTodo";
-class TodoContainer extends Component {
+const TodoContainer = () => {
 
-    state = {
-        todos: []
-       };
+   const [todos, setTodos] = useState(getInitialTodos());
 
-       handleChange = (id) => {
-        this.setState(prevState => ({
-            todos: prevState.todos.map(todo => {
+       const handleChange = (id) => {
+        setTodos(prevState => 
+             prevState.map(todo => {
                 if(todo.id===id) {
                     return {
                         ...todo,
@@ -22,69 +20,62 @@ class TodoContainer extends Component {
                 }
                 return todo;
             })
-        }))
+        )
        }
 
-       delTodo = id => {
-        this.setState({
-            todos: [
-                ...this.state.todos.filter(todo => {
+       const delTodo = id => {
+        setTodos(
+            [
+                ...todos.filter(todo => {
                     return todo.id !== id;
                 })
             ]
-        })
+        )
        }
 
-       addTodoItem = title => {
+       const addTodoItem = title => {
         const newTodo = {
             id: uuidv4(),
             title: title,
             completed: false
           };
-          this.setState({
-            todos: [...this.state.todos, newTodo]
-          });
+          setTodos(
+             [...todos, newTodo]
+          );
        }
 
-       setUpdate = (updatedTitle, id) => {
-        this.setState({
-            todos: this.state.todos.map(todo => {
+       const setUpdate = (updatedTitle, id) => {
+        setTodos(
+             todos.map(todo => {
               if (todo.id === id) {
                 todo.title = updatedTitle
               }
               return todo
             }),
-          })
+          )
        }
 
-       componentDidUpdate(prevProps, prevState) {
-        if(prevState.todos != this.state.todos) {
-          const temp = JSON.stringify(this.state.todos);
-          localStorage.setItem("todos", temp);
-        }
+      
+       function getInitialTodos() {
+        // getting stored items
+        const temp = localStorage.getItem("todos")
+        const savedTodos = JSON.parse(temp)
+        return savedTodos || []
       }
 
-      componentDidMount() {
-        const temp = localStorage.getItem("todos");
-        const loadedTodos = JSON.parse(temp);
-        if(loadedTodos) {
-          this.setState({
-            todos: loadedTodos
-          })
-        }
-      }
+      useEffect(() => {
+        // storing todos items
+        const temp = JSON.stringify(todos)
+        localStorage.setItem("todos", temp)
+      }, [todos])
       
-      
-
-    render() {
         return (
             <Fragment>
             <Header />
-            <InputTodo addTodoProps={this.addTodoItem}/>
-            <TodoList todos={this.state.todos} handleChangeProps={this.handleChange} delTodoProps={this.delTodo} setUpdateProps={this.setUpdate} />
+            <InputTodo addTodoProps={addTodoItem}/>
+            <TodoList todos={todos} handleChangeProps={handleChange} delTodoProps={delTodo} setUpdateProps={setUpdate} />
             </Fragment>
         );
-    }
 }
 
 export default TodoContainer;
