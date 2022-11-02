@@ -4,6 +4,8 @@ import React, { useEffect, Fragment, useState } from "react";
 import TodoList from "./TodoList";
 import Header from "./Header";
 import InputTodo from "./InputTodo";
+
+
 const TodoContainer = () => {
 
    const [todos, setTodos] = useState(getInitialTodos());
@@ -72,6 +74,7 @@ const TodoContainer = () => {
         return (
             <Fragment>
             <Header />
+            <a href="/about">click</a>
             <InputTodo addTodoProps={addTodoItem}/>
             <TodoList todos={todos} handleChangeProps={handleChange} delTodoProps={delTodo} setUpdateProps={setUpdate} />
             </Fragment>
